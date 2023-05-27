@@ -27,22 +27,3 @@ vim.diagnostic.config({
     },
 })
 
-vim.cmd([[
-set signcolumn=yes
-autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
-
--- Create ref for lsp config to see the rust tools package
-local rt = require("rust-tools")
-
-rt.setup {
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end
-  }
-}
-

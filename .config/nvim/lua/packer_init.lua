@@ -37,46 +37,41 @@ end
 
 -- Install plugins
 return packer.startup(function(use)
-  -- Add you plugins here:
   use 'wbthomason/packer.nvim' -- packer can manage itself
 
   -- File explorer
-  use 'kyazdani42/nvim-tree.lua'
+  use { 'kyazdani42/nvim-tree.lua', config = [[require('plugins._nvim-tree')]] }
 
   -- Indent line
-  use 'lukas-reineke/indent-blankline.nvim'
-
-  -- Mason manages LSP server, linters, debuggers
-  use 'williamboman/mason-lspconfig.nvim'
   use {
-    'williamboman/mason.nvim',
+    'lukas-reineke/indent-blankline.nvim',
     config = function()
-      require('mason').setup{}
-      require('mason-lspconfig').setup({
-        ensure_installed = {
-          "rust_analyzer",
-          "tsserver",
-          "sumneko_lua",
-          "marksman",
-          "rnix",
-          "pyright",
-          "sqlls",
-          "yamlls",
-          "gopls",
-          "bashls"
-      }
-      })
+      require('plugins._indent-blankline')
     end
   }
 
-  -- Connect configs for the LSP servers
-  use 'neovim/nvim-lspconfig'
-
-  use 'simrat39/rust-tools.nvim'
+  -- Mason is a package manager that manages LSP server, linters, debuggers;
+  -- Here we bridge mason with lspconfig
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    config = function()
+      require('plugins._mason')
+      require('plugins._mason-lspconfig')
+      require('plugins._lspconfig')
+    end,
+    after = { "cmp-nvim-lsp" }
+  }
 
   -- Set up autocomplete for the lsp
     -- Completion framework:
-  use 'hrsh7th/nvim-cmp'
+  use {
+    'hrsh7th/nvim-cmp',
+    config = function()
+      require('plugins._nvim-cmp')
+    end
+  }
 
   -- LSP completion source:
   use 'hrsh7th/cmp-nvim-lsp'
@@ -90,36 +85,23 @@ return packer.startup(function(use)
   use 'hrsh7th/vim-vsnip'
   -- end autocomplete plugins
 
-  -- Autopair
-  -- Note: disabled because of weird issue where it prevents you typing chars
-  -- use {
-  --   'windwp/nvim-autopairs',
-  --   config = function()
-  --     require('nvim-autopairs').setup{}
-  --   end
-  -- }
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'neovim/nvim-lspconfig',
+    },
+  }
+
+  use {
+    'simrat39/rust-tools.nvim',
+    config = function() require('plugins._rust-tools') end
+  }
 
   -- Icons
   use {
     'kyazdani42/nvim-web-devicons',
-    config = function()
-      require('nvim-web-devicons').setup {
-        override = {
-          zsh = {
-            icon = "",
-            color = "#428850",
-            cterm_color = "65",
-            name = "Zsh"
-          }
-         };
-         -- globally enable different highlight colors per icon (default to true)
-         -- if set to false all icons will have the default icon's color
-         color_icons = true;
-         -- globally enable default icons (default to false)
-         -- will get overriden by `get_icons` option
-         default = true;
-      }
-    end
+    config = function() require('plugins._nvim-web-devicons') end
   }
 
   -- Tag viewer
@@ -128,22 +110,7 @@ return packer.startup(function(use)
   -- Treesitter interface
   use {
     'nvim-treesitter/nvim-treesitter',
-    config = function()
-        require('nvim-treesitter.configs').setup {
-          ensure_installed = { "lua", "rust", "toml" },
-          auto_install = true,
-          highlight = {
-            enable = true,
-            additional_vim_regex_highlighting=false,
-          },
-          ident = { enable = true },
-          rainbow = {
-            enable = true,
-            extended_mode = true,
-            max_file_lines = nil,
-          }
-        }
-    end
+    config = function() require('plugins._nvim-treesitter') end
   }
 
   -- hook up debugging through xcode debugger
@@ -157,25 +124,21 @@ return packer.startup(function(use)
   -- Statusline
   use {
     'feline-nvim/feline.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons' },
+    after = { 'nvim-web-devicons' },
   }
 
   -- git labels
   use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('gitsigns').setup{}
-    end
+    config = function() require('gitsigns').setup{} end
   }
 
   -- Dashboard (start screen)
   use {
     'goolord/alpha-nvim',
     requires = { 'kyazdani42/nvim-web-devicons' },
-    config = function ()
-        require'alpha'.setup(require'alpha.themes.dashboard'.config)
-    end
+    config = function() require('plugins._alpha-nvim') end
   }
 
   -- Set up pop up to input commands as I work
@@ -183,12 +146,26 @@ return packer.startup(function(use)
 
   -- Set up fuzzy search
   use {
-  'nvim-telescope/telescope.nvim', tag = '0.1.0',
-  requires = { { 'nvim-lua/plenary.nvim' } },
-  config = function()
-    require('telescope').setup{}
-  end
-}
+    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    requires = {
+      { 'nvim-lua/plenary.nvim' },
+      { "nvim-telescope/telescope-live-grep-args.nvim" },
+    },
+    config = function() require('plugins._telescope') end
+  }
+
+  -- Set up markdown mermaid preview
+    use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
+
+  -- Set up calendar integration
+  use({ "mattn/calendar-vim" })
+
+  -- Set up zettelkasten
+  use {
+    "renerocksai/telekasten.nvim",
+    requires = { "mattn/calendar-vim" },
+    config = function() require('plugins._telekasten') end
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
