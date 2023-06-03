@@ -10,7 +10,7 @@ local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({
+  Packer_bootstrap = fn.system({
     'git',
     'clone',
     '--depth',
@@ -40,29 +40,37 @@ return packer.startup(function(use)
   use 'wbthomason/packer.nvim' -- packer can manage itself
 
   -- File explorer
-  use { 'kyazdani42/nvim-tree.lua', config = [[require('plugins._nvim-tree')]] }
+  use { 'kyazdani42/nvim-tree.lua', config = function() require('plugins._nvim-tree') end }
 
   -- Indent line
   use {
     'lukas-reineke/indent-blankline.nvim',
-    config = function()
-      require('plugins._indent-blankline')
-    end
+    config = function() require('plugins._indent-blankline') end
   }
 
   -- Mason is a package manager that manages LSP server, linters, debuggers;
   -- Here we bridge mason with lspconfig
   use {
     "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig",
     config = function()
       require('plugins._mason')
-      require('plugins._mason-lspconfig')
-      require('plugins._lspconfig')
-    end,
-    after = { "cmp-nvim-lsp" }
+    end
   }
+  use {
+    "williamboman/mason-lspconfig.nvim",
+    config = function()
+      require('plugins._mason-lspconfig')
+    end,
+    after = {"mason.nvim"}
+  }
+
+  use {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require('plugins._lspconfig')
+    end
+  }
+
 
   -- Set up autocomplete for the lsp
     -- Completion framework:
@@ -74,16 +82,16 @@ return packer.startup(function(use)
   }
 
   -- LSP completion source:
-  use 'hrsh7th/cmp-nvim-lsp'
-
-  -- Useful completion sources:
+  use {
+    'hrsh7th/cmp-nvim-lsp',
+    after = { "nvim-cmp" },
+  }
   use 'hrsh7th/cmp-nvim-lua'
   use 'hrsh7th/cmp-nvim-lsp-signature-help'
   use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/vim-vsnip'
-  -- end autocomplete plugins
 
   use {
     'jose-elias-alvarez/null-ls.nvim',
@@ -91,11 +99,14 @@ return packer.startup(function(use)
       'nvim-lua/plenary.nvim',
       'neovim/nvim-lspconfig',
     },
+    config = function() require('plugins._null-ls') end,
+    after = { "nvim-lspconfig" }
   }
 
   use {
     'simrat39/rust-tools.nvim',
-    config = function() require('plugins._rust-tools') end
+    config = function() require('plugins._rust-tools') end,
+    after = { "nvim-lspconfig" }
   }
 
   -- Icons
@@ -124,7 +135,7 @@ return packer.startup(function(use)
   -- Statusline
   use {
     'feline-nvim/feline.nvim',
-    after = { 'nvim-web-devicons' },
+    config = function() require('plugins._feline') end
   }
 
   -- git labels
@@ -167,9 +178,11 @@ return packer.startup(function(use)
     config = function() require('plugins._telekasten') end
   }
 
+  use 'github/copilot.vim'
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
-  if packer_bootstrap then
+  if Packer_bootstrap then
     require('packer').sync()
   end
 end)

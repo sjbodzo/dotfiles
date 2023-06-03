@@ -23,7 +23,7 @@ opt.completeopt = 'menuone,noinsert,noselect'  -- Autocomplete options
 opt.number = true           -- Show line number
 opt.showmatch = true        -- Highlight matching parenthesis
 opt.foldmethod = 'marker'   -- Enable folding (default 'foldmarker')
-opt.colorcolumn = '90'      -- Line lenght marker at 80 columns
+opt.colorcolumn = '100'      -- Line lenght marker at 80 columns
 opt.splitright = true       -- Vertical split to the right
 opt.splitbelow = true       -- Horizontal split to the bottom
 opt.ignorecase = true       -- Ignore case letters when search
@@ -109,7 +109,6 @@ set signcolumn=yes
 autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
 ]])
 
-
 -- Set options for vimspector (debugger)
 vim.cmd([[
 let g:vimspector_sidebar_width = 85
@@ -121,7 +120,12 @@ let g:vimspector_terminal_maxwidth = 70
 -- Set options for lsp server for postgres
 vim.cmd([[
 let g:LanguageClient_serverCommands = {
-    \ 'sql': ['sql-language-server', 'up', '--method', 'stdio'],
-    \ }
+\ 'sql': ['sql-language-server', 'up', '--method', 'stdio'],
+\ }
 ]])
 
+-- Github copilot
+-- turn off tab completion
+vim.cmd([[
+let g:copilot_no_tab_map = v:true
+]])
