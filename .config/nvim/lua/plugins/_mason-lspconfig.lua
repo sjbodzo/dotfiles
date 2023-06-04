@@ -1,5 +1,5 @@
 local mason_lspconfig = require("mason-lspconfig")
-local lspconfig = require("lspconfig")
+-- local lspconfig = require("lspconfig")
 
 local langs = {
     "rust_analyzer",
@@ -10,8 +10,7 @@ local langs = {
     "yamlls",
     "gopls",
     "bashls",
-    "lua_ls",
-    "ruff_lsp"
+    "lua_ls"
 }
 
 --local handlers = {
