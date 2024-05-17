@@ -40,6 +40,35 @@ lspconfig.lua_ls.setup {
       }
   }
 }
+lspconfig.tsserver.setup {}
+
+lspconfig.jsonnet_ls.setup{
+	settings = {
+		ext_vars = {},
+		formatting = {
+			-- default values
+			Indent              = 2,
+			MaxBlankLines       = 2,
+			StringStyle         = 'single',
+			CommentStyle        = 'slash',
+			PrettyFieldNames    = true,
+			PadArrays           = false,
+			PadObjects          = true,
+			SortImports         = true,
+			UseImplicitPlus     = true,
+			StripEverything     = false,
+			StripComments       = false,
+			StripAllButComments = false,
+		},
+	},
+}
+
+local servers = { 'tsserver', 'lua_ls', 'jsonnet_ls' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+  }
+end
 
 -- lspconfig.pylsp.setup({})
 --  settings = {

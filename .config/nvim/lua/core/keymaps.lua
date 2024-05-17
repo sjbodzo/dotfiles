@@ -34,7 +34,7 @@ map('n', '<leader>c', ':nohl<CR>')
 
 -- Toggle auto-indenting for code paste
 map('n', '<F2>', ':set invpaste paste?<CR>')
-vim.opt.pastetoggle = '<F2>'
+-- vim.opt.pastetoggle = '<F2>'
 
 -- Change split orientation
 map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal
@@ -60,16 +60,16 @@ map('n', '<leader>q', ':qa!<CR>')
 -----------------------------------------------------------
 
 -- Terminal mappings
-map('n', '<C-t>', ':Term<CR>', { noremap = true })  -- open
-map('t', '<Esc>', '<C-\\><C-n>')                    -- exit
+map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
+map('t', '<Esc>', '<C-\\><C-n>')                   -- exit
 
 -- NvimTree
-map('n', '<C-n>', ':NvimTreeToggle<CR>')            -- open/close
-map('n', '<leader>f', ':NvimTreeRefresh<CR>')       -- refresh
-map('n', '<leader>n', ':NvimTreeFindFile<CR>')      -- search file
+map('n', '<C-n>', ':NvimTreeToggle<CR>')       -- open/close
+map('n', '<leader>f', ':NvimTreeRefresh<CR>')  -- refresh
+map('n', '<leader>n', ':NvimTreeFindFile<CR>') -- search file
 
 -- Tagbar
-map('n', '<leader>z', ':TagbarToggle<CR>')          -- open/close
+map('n', '<leader>z', ':TagbarToggle<CR>') -- open/close
 
 -- Vimspector
 vim.cmd([[
@@ -86,14 +86,17 @@ map('n', "De", ":call vimspector#Evaluate()<cr>")
 
 -- Telescope shortcuts for fuzzy search
 local builtin = require('telescope.builtin')
+local rel_live_grep = function ()
+  builtin.live_grep({ cwd = require("telescope.utils").buffer_dir()})
+end
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fg', rel_live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
 -- Language server key mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -171,9 +174,15 @@ vim.cmd([[
 ]])
 
 -- Copilot config (overwrite tab for nvim-cmp to use)
-vim.api.nvim_set_keymap('i', '<C-\\>', '<Plug>(copilot-dismiss)', {silent=true, noremap=true, desc="Dismiss copilot suggestion"})
-vim.api.nvim_set_keymap('i', '<C-k>', 'copilot#Previous()', {expr=true, silent=true, desc="Previous copilot suggestion"})
-vim.api.nvim_set_keymap('i', '<C-j>', 'copilot#Next()', {expr=true, silent=true, desc="Next copilot suggestion"})
-vim.api.nvim_set_keymap('i', '<C-s>', 'copilot#Suggest()', {expr=true, silent=true, desc="Suggest copilot"})
-vim.api.nvim_set_keymap('i', '<C-a>', 'copilot#Accept("<CR>")', {expr=true, silent=true, desc="Accept copilot suggestion"})
+vim.api.nvim_set_keymap('i', '<C-\\>', '<Plug>(copilot-dismiss)',
+  { silent = true, noremap = true, desc = "Dismiss copilot suggestion" })
+vim.api.nvim_set_keymap('i', '<C-k>', 'copilot#Previous()', { expr = true, silent = true, desc =
+"Previous copilot suggestion" })
+vim.api.nvim_set_keymap('i', '<C-j>', 'copilot#Next()', { expr = true, silent = true, desc = "Next copilot suggestion" })
+vim.api.nvim_set_keymap('i', '<C-s>', 'copilot#Suggest()', { expr = true, silent = true, desc = "Suggest copilot" })
+vim.api.nvim_set_keymap('i', '<C-a>', 'copilot#Accept("<CR>")',
+  { expr = true, silent = true, desc = "Accept copilot suggestion" })
 
+-- Markdown Preview
+vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
+vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})

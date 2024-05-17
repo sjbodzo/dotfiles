@@ -51,7 +51,7 @@ local plugins = {
 
   {
     'astral-sh/ruff-lsp',
-    after = { 'nvim-lspconfig' },
+    --after = { 'nvim-lspconfig' },
     config = function() require('plugins._ruff') end
   },
 
@@ -94,14 +94,14 @@ local plugins = {
       'neovim/nvim-lspconfig',
     },
     config = function() require('plugins._null-ls') end,
-    after = { "nvim-lspconfig" }
+    -- after = { "nvim-lspconfig" }
   },
 
   -- "batteries included" rust lsp config
   {
     'simrat39/rust-tools.nvim',
     config = function() require('plugins._rust-tools') end,
-    after = { "nvim-lspconfig" }
+    -- after = { "nvim-lspconfig" }
   },
 
   -- icons
@@ -133,13 +133,6 @@ local plugins = {
     config = function() require('plugins._feline') end
   },
 
-  -- git labels
-  {
-    'lewis6991/gitsigns.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function() require('gitsigns').setup{} end
-  },
-
   -- Dashboard (start screen)
   {
     'goolord/alpha-nvim',
@@ -152,7 +145,7 @@ local plugins = {
 
   -- Set up fuzzy search
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    'nvim-telescope/telescope.nvim', tag = '0.1.4',
     dependencies = {
       { 'nvim-lua/plenary.nvim' },
       { "nvim-telescope/telescope-live-grep-args.nvim" },
@@ -161,14 +154,14 @@ local plugins = {
   },
 
   -- Set up markdown mermaid preview
-   {
-	"iamcco/markdown-preview.nvim",
-    	run = "cd app && npm install",
-	setup = function()
-		vim.g.mkdp_filetypes = { "markdown" }
-	end,
-	ft = { "markdown" },
-   },
+  -- {
+	--"iamcco/markdown-preview.nvim",
+  --  	run = "cd app && npm install",
+	--setup = function()
+	--	vim.g.mkdp_filetypes = { "markdown" }
+	--end,
+	--ft = { "markdown" },
+  -- },
 
   -- Set up calendar integration
   { "mattn/calendar-vim" },
@@ -179,6 +172,87 @@ local plugins = {
     dependencies = { "mattn/calendar-vim" },
     config = function() require('plugins._telekasten') end
   },
+
+  { 'toppair/peek.nvim',
+    build = 'deno task --quiet build:fast',
+    config = function()
+      require('peek').setup({
+      auto_load = true,         -- whether to automatically load preview when
+                                -- entering another markdown buffer
+      close_on_bdelete = true,  -- close preview window on buffer delete
+
+      syntax = true,            -- enable syntax highlighting, affects performance
+
+      theme = 'dark',           -- 'dark' or 'light'
+
+      update_on_change = true,
+
+      app = 'webview',          -- 'webview', 'browser', string or a table of strings
+                                -- explained below
+
+      filetype = { 'markdown' },-- list of filetypes to recognize as markdown
+
+      -- relevant if update_on_change is true
+      throttle_at = 200000,     -- start throttling when file exceeds this
+                                -- amount of bytes in size
+      throttle_time = 'auto',   -- minimum amount of time in milliseconds
+                                -- that has to pass before starting new render
+    })
+    end
+  },
+
+  { 'f-person/git-blame.nvim' },
+
+  {
+    'sindrets/diffview.nvim',
+    config = function() require('plugins._diffview') end
+  },
+
+  {
+    'ahmedkhalf/project.nvim',
+    config = function()
+      require('project_nvim').setup({
+      -- Manual mode doesn't automatically change your root directory, so you have
+      -- the option to manually do so using `:ProjectRoot` command.
+      manual_mode = false,
+
+      -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+      -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+      -- order matters: if one is not detected, the other is used as fallback. You
+      -- can also delete or rearangne the detection methods.
+      detection_methods = { "lsp", "pattern" },
+
+      -- All the patterns used to detect root dir, when **"pattern"** is in
+      -- detection_methods
+      patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+
+      -- Table of lsp clients to ignore by name
+      -- eg: { "efm", ... }
+      ignore_lsp = {},
+
+      -- Don't calculate root dir on specific directories
+      -- Ex: { "~/.cargo/*", ... }
+      exclude_dirs = {},
+
+      -- Show hidden files in telescope
+      show_hidden = false,
+
+      -- When set to false, you will get a message when project.nvim changes your
+      -- directory.
+      silent_chdir = true,
+
+      -- What scope to change the directory, valid options are
+      -- * global (default)
+      -- * tab
+      -- * win
+      scope_chdir = 'global',
+
+      -- Path where project.nvim will store the project history for use in
+      -- telescope
+      datapath = vim.fn.stdpath("data"),
+      })
+    end
+  }
 
   -- { 'github/copilot.vim' }
 }
