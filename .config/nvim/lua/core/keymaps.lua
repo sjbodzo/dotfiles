@@ -1,3 +1,5 @@
+local keymap = vim.api.nvim_set_keymap
+
 -----------------------------------------------------------
 -- Define keymaps of Neovim and installed plugins.
 -----------------------------------------------------------
@@ -9,9 +11,6 @@ local function map(mode, lhs, rhs, opts)
   end
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
-
--- Change leader to a comma
-vim.g.mapleader = ','
 
 -- ensure we use homembrew copy of exuberant ctags
 vim.g.tagbar_ctags_bin = '/usr/local/bin/ctags'
@@ -60,7 +59,8 @@ map('n', '<leader>q', ':qa!<CR>')
 -----------------------------------------------------------
 
 -- Terminal mappings
-map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
+-- map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
+map('n', '<C-t>', ':tabnew<CR>', { noremap = true }) -- open
 map('t', '<Esc>', '<C-\\><C-n>')                   -- exit
 
 -- NvimTree
@@ -89,10 +89,13 @@ local builtin = require('telescope.builtin')
 local rel_live_grep = function ()
   builtin.live_grep({ cwd = require("telescope.utils").buffer_dir()})
 end
+
+-- set key mappings
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', rel_live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+
 
 -- Language server key mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -174,15 +177,25 @@ vim.cmd([[
 ]])
 
 -- Copilot config (overwrite tab for nvim-cmp to use)
-vim.api.nvim_set_keymap('i', '<C-\\>', '<Plug>(copilot-dismiss)',
+keymap('i', '<C-\\>', '<Plug>(copilot-dismiss)',
   { silent = true, noremap = true, desc = "Dismiss copilot suggestion" })
-vim.api.nvim_set_keymap('i', '<C-k>', 'copilot#Previous()', { expr = true, silent = true, desc =
+keymap('i', '<C-k>', 'copilot#Previous()', { expr = true, silent = true, desc =
 "Previous copilot suggestion" })
-vim.api.nvim_set_keymap('i', '<C-j>', 'copilot#Next()', { expr = true, silent = true, desc = "Next copilot suggestion" })
-vim.api.nvim_set_keymap('i', '<C-s>', 'copilot#Suggest()', { expr = true, silent = true, desc = "Suggest copilot" })
-vim.api.nvim_set_keymap('i', '<C-a>', 'copilot#Accept("<CR>")',
+keymap('i', '<C-j>', 'copilot#Next()', { expr = true, silent = true, desc = "Next copilot suggestion" })
+keymap('i', '<C-s>', 'copilot#Suggest()', { expr = true, silent = true, desc = "Suggest copilot" })
+keymap('i', '<C-a>', 'copilot#Accept("<CR>")',
   { expr = true, silent = true, desc = "Accept copilot suggestion" })
 
 -- Markdown Preview
 vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
 vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
+
+-- Quicknote shortcuts
+--keymap("n", "<leader>sn", "<cmd>:lua require('quicknote').ShowNoteSigns()<CR>",{ noremap = true, desc = "New note at CWD" })
+--keymap("n", "<leader>cn", "<cmd>:lua require('quicknote').NewNoteAtCWD()<CR>",{ noremap = true, desc = "New note at CWD" })
+--keymap("n", "<leader>pn", "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<CR>",{ noremap = true, desc = "Create quick note at line" })
+--keymap("n", "<leader>on", "<cmd>:lua require('quicknote').OpenNoteAtCurrentLine()<CR>",{ noremap = true, desc = "Open note at line" })
+--keymap("n", "<leader>ln", "<cmd>:lua require('quicknote').ListNotesForCWD()<CR>",{ noremap = true, desc = "List notes at CWD" })
+--keymap("n", "<leader>rn", "<cmd>:lua require('quicknote').DeleteNoteAtCurrentLine()<CR>",{ noremap = true, desc = "Delete note at line" })
+--keymap("n", "<leader>jn", "<cmd>:lua require('quicknote').JumpToNextNote()<CR>",{ noremap = true, desc = "Jump to next note" })
+--keymap("n", "<leader>jN", "<cmd>:lua require('quicknote').JumpToPreviousNote()<CR>",{ noremap = true, desc = "Jump to previous note" })

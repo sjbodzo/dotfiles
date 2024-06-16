@@ -26,20 +26,13 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 
-  if client.resolved_capabilities.document_formatting then
-    vim.cmd("au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-  end
+ -- if client.resolved_capabilities.document_formatting then
+ --   vim.cmd("au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+ -- end
 end
 
-lspconfig.lua_ls.setup {
-  settings = {
-      Lua = {
-          diagnostics = {
-              globals = { "vim" }
-          }
-      }
-  }
-}
+lspconfig.luals.setup {}
+
 lspconfig.tsserver.setup {}
 
 lspconfig.jsonnet_ls.setup{

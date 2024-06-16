@@ -8,16 +8,6 @@
 local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 
--- auto for packer
--- Autocommand that reloads neovim whenever you save the packer_init.lua file
--- vim.cmd [[
---   augroup packer_user_config
---     autocmd!
---     autocmd BufWritePost packer_init.lua source <afile> | PackerSync
---   augroup end
--- ]]
-
-
 -- General settings:
 --------------------
 
@@ -92,6 +82,16 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.lsp.start({
       name = 'bash-language-server',
       cmd = { 'bash-language-server', 'start' },
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'tsx',
+  callback = function()
+    vim.lsp.start({
+      name = 'ts-language-server',
+      cmd = { 'ts-language-server', 'start' },
     })
   end,
 })

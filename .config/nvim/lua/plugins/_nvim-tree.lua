@@ -140,7 +140,8 @@ nvim_tree.setup {
   },
   filesystem_watchers = {
     enable = true,
-    debounce_delay = 50,
+    debounce_delay = 150,
+    ignore_dirs = { 'target', '.git' }
   },
   git = {
     enable = true,
