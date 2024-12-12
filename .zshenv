@@ -13,4 +13,4 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 export PATH="/opt/homebrew/opt/postgresql@12/bin:$PATH"
 
-export VIMRUNTIME=/Volumes/Riker/forge/nvim-macos/share/nvim/runtime
+#export VIMRUNTIME=/Volumes/Riker/forge/nvim-macos/share/nvim/runtime
