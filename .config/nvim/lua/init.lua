@@ -147,13 +147,6 @@ local plugins = {
   -- Set up pop up to input commands as I work
   { 'voldikss/vim-floaterm' },
 
-  -- Set up quick notes in file
-  {
-    "RutaTang/quicknote.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function() require('plugins._quicknote') end
-  },
-
   -- Set up fuzzy search
   {
     'nvim-telescope/telescope.nvim',
