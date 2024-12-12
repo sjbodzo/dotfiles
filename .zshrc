@@ -43,9 +43,9 @@ bindkey -v                  # vim bindings in zsh
 [ -f $HOME/.fzf.zsh ] && \. $HOME/.fzf.zsh
 bindkey "${terminfo[kcuu1]}" fzf-history-widget
 
-\. $HOME/.config/zsh/.zplugin/**/*.plugin.zsh              # source plugins (e.g. fzf-tab)
-\. $HOME/.config/zsh/.zplugin/zsh-ls-colors/ls-colors.zsh &>/dev/null    # source coloring
-enable-fzf-tab                        # enable the fzf auto completion to override compsys
+#\. $HOME/.config/zsh/.zplugin/**/*.plugin.zsh              # source plugins (e.g. fzf-tab)
+#\. $HOME/.config/zsh/.zplugin/zsh-ls-colors/ls-colors.zsh &>/dev/null    # source coloring
+# enable-fzf-tab                        # enable the fzf auto completion to override compsys
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
