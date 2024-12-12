@@ -15,7 +15,7 @@ path=(
     $(go env GOPATH)/bin
     $HOME/.local/bin
     /opt/homebrew/bin
-    /opt/homebrew/opt/openssl@3/bin
+#    /opt/homebrew/opt/openssl@3/bin
     $HOME/.poetry/bin
     /Library/Frameworks/Python.framework/Versions/3.10/bin
     /bin
@@ -25,8 +25,8 @@ path=(
 
 # configure my zsh function path
 fpath=(
-    $(brew --prefix)/share/zsh/site-functions            # completions installed via brew plugins
-	$HOME/.zfunc                                         # my custom functions
+#    $(brew --prefix)/share/zsh/site-functions            # completions installed via brew plugins
+#	$HOME/.zfunc                                         # my custom functions
     "${fpath[@]}"                                        # expand existing fpath to not blow it away
 )
 autoload -U $fpath[2]/*(.:t)                             # source my custom functions

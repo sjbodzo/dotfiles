@@ -37,9 +37,6 @@ telescope.setup {
     }
   },
   extensions = {
-    quicknote = {
-      defaultScope = "CWD",
-    },
     live_grep_args = {
       auto_quoting = true, -- enable/disable auto-quoting
       mappings = {      -- extend mappings
@@ -52,7 +49,6 @@ telescope.setup {
   }
 }
 
-telescope.load_extension("quicknote")
 telescope.load_extension("live_grep_args")
 
 
