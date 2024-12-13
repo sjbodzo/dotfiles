@@ -28,7 +28,7 @@ fpath=(
 	$HOME/.config/zsh/.zfunc                             # my custom functions
     "${fpath[@]}"                                        # expand existing fpath to not blow it away
 )
-autoload -U $fpath[1]/*(.:t)                             # source my custom functions
+autoload -Uz $fpath[1]/*                                 # source my custom functions
 
 \. $HOME/.zprofile                                       # source shell aliases
 

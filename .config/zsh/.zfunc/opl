@@ -1,0 +1,3 @@
+opl () {
+    eval $(op signin)
+}
