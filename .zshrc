@@ -24,16 +24,15 @@ path=(
 )
 
 # configure my zsh function path
-#fpath=(
-#    $(brew --prefix)/share/zsh/site-functions            # completions installed via brew plugins
-#	$HOME/.zfunc                                         # my custom functions
-#    "${fpath[@]}"                                        # expand existing fpath to not blow it away
-#)
-#autoload -U $fpath[2]/*(.:t)                             # source my custom functions
+fpath=(
+	$HOME/.zfunc                                         # my custom functions
+    "${fpath[@]}"                                        # expand existing fpath to not blow it away
+)
+autoload -U $fpath[1]/*(.:t)                             # source my custom functions
 
 \. $HOME/.zprofile                                       # source shell aliases
 
-eval "$(starship init zsh)" # override default prompt
+[ -x "$(command -v starship)" ] && eval "$(starship init zsh)" # override default prompt
 
 bindkey -v                  # vim bindings in zsh
 
