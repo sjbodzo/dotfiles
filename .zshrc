@@ -33,7 +33,7 @@ path=(
 
 \. $HOME/.zprofile                                       # source shell aliases
 
-eval $(op signin --account ******.1password.com <<<$(cat $HOME/.1password_login))
+$HOME/op_login.sh
 export SOPS_AGE_KEY=$(get_pass_vault_item '********' --vault '*******' --fields 'Private Key')
 
 eval "$(starship init zsh)" # override default prompt
