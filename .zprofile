@@ -2,6 +2,7 @@ if [[ $OSTYPE == darwin* ]]; then
 	alias flush='dscacheutil -flushcache'
 fi
 alias forge='$HOME/forge'
+alias switch="nix run nix-darwin -- switch --flake ~/.config/nix-darwin"
 
 [ -x "$(command -v eza)" ] && alias ll='eza -l'
 [ -x "$(command -v kubectl)" ] && alias k='kubectl'
