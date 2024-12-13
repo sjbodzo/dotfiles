@@ -33,9 +33,6 @@ path=(
 
 \. $HOME/.zprofile                                       # source shell aliases
 
-$HOME/op_login.sh
-export SOPS_AGE_KEY=$(get_pass_vault_item '********' --vault '*******' --fields 'Private Key')
-
 eval "$(starship init zsh)" # override default prompt
 
 bindkey -v                  # vim bindings in zsh
@@ -43,9 +40,8 @@ bindkey -v                  # vim bindings in zsh
 [ -f $HOME/.fzf.zsh ] && \. $HOME/.fzf.zsh
 bindkey "${terminfo[kcuu1]}" fzf-history-widget
 
-#\. $HOME/.config/zsh/.zplugin/**/*.plugin.zsh              # source plugins (e.g. fzf-tab)
-#\. $HOME/.config/zsh/.zplugin/zsh-ls-colors/ls-colors.zsh &>/dev/null    # source coloring
-# enable-fzf-tab                        # enable the fzf auto completion to override compsys
+\. $HOME/.config/zsh/.zplugin/**/*.plugin.zsh              # source plugins (e.g. fzf-tab)
+enable-fzf-tab                        # enable the fzf auto completion to override compsys
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -71,6 +67,7 @@ bindkey "^U" backward-kill-line
 [ -x "$(command -v kubectl)" ] && \. <(kubectl completion zsh)
 [ -x "$(command -v kubectl krew)" ] && \. <(kubectl krew completion zsh)
 [ -x "$(command -v kind)" ] && \. <(kind completion zsh)
+[ -x "$(command -v fzf)" ] && \. <(fzf --zsh) # only on fzf > 0.48
 
 # Configure helpers (s/w project tools)
 [ -x "$(command -v pyenv)" ] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
@@ -81,6 +78,7 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
 
+# source nix-darwin
 if [ -e '~/.nix-profile/etc/profile.d/nix-darwin.sh' ]; then
     . '~/.nix-profile/etc/profile.d/nix-darwin.sh'
 fi
