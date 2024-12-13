@@ -25,7 +25,7 @@ path=(
 
 # configure my zsh function path
 fpath=(
-	$HOME/.zfunc                                         # my custom functions
+	$HOME/.config/zsh/.zfunc                             # my custom functions
     "${fpath[@]}"                                        # expand existing fpath to not blow it away
 )
 autoload -U $fpath[1]/*(.:t)                             # source my custom functions
