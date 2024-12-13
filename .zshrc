@@ -39,9 +39,6 @@ bindkey -v                  # vim bindings in zsh
 [ -f $HOME/.fzf.zsh ] && \. $HOME/.fzf.zsh
 bindkey "${terminfo[kcuu1]}" fzf-history-widget
 
-\. $HOME/.config/zsh/.zplugin/**/*.plugin.zsh              # source plugins (e.g. fzf-tab)
-enable-fzf-tab                        # enable the fzf auto completion to override compsys
-
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
 # set descriptions format to enable group support
