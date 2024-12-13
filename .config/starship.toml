@@ -1,1 +1,20 @@
-command_timeout = 3000
+command_timeout = 5000
+
+[kubernetes]
+format = '⎈ [$context \($namespace\)](#21c262) '
+disabled = false
+
+[[kubernetes.contexts]]
+context_pattern = "(jess.bodzo-?)(?P<cluster>.*).k8s.ditto.live"
+context_alias = "$cluster"
+style = "green"
+
+[[kubernetes.contexts]]
+context_pattern = "kind-(?P<cluster>.*)"
+context_alias = "$cluster"
+style = "purple"
+
+[[kubernetes.contexts]]
+context_pattern = "k3d-(?P<cluster>.*)"
+context_alias = "$cluster"
+style = "blue"
