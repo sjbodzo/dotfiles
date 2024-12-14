@@ -66,6 +66,7 @@ bindkey "^U" backward-kill-line
 [ -x "$(command -v fzf)" ] && \. <(fzf --zsh) # only on fzf > 0.48
 
 # Configure helpers (s/w project tools)
+[ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 [ -x "$(command -v pyenv)" ] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
 [ -x "$(command -v fnm)" ] && eval "$(fnm env --use-on-cd)"
 
