@@ -2,7 +2,7 @@ if [[ $OSTYPE == darwin* ]]; then
 	alias flush='dscacheutil -flushcache'
 fi
 alias forge='$HOME/forge'
-alias switch="nix run nix-darwin -- switch --flake ~/.config/nix-darwin"
+alias switch="darwin-rebuild switch --flake ~/.config/nix-darwin"
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 [ -x "$(command -v eza)" ] && alias ll='eza -l'
