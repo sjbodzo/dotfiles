@@ -1,0 +1,10 @@
+layout {
+   pane split_direction="vertical" {
+       pane split_direction="horizontal" name="editor" size="70%"
+       pane stacked=true {
+           pane name="shell_1"
+           pane name="shell_2"
+       }
+   }
+}
+
