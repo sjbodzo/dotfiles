@@ -30,7 +30,7 @@ fpath=(
 )
 autoload -Uz $fpath[1]/*                                 # source my custom functions
 
-\. $HOME/.zprofile                                       # source shell aliases
+[[ -e "$HOME/.zprofile" ]] && \. $HOME/.zprofile         # source shell aliases
 
 [ -x "$(command -v starship)" ] && eval "$(starship init zsh)" # override default prompt
 
