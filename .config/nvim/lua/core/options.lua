@@ -9,6 +9,10 @@
 local g = vim.g       -- Global variables
 local opt = vim.opt   -- Set options (global/buffer/windows-scoped)
 
+-- Color Theme Selection
+local colorscheme = require("helpers.colors")
+vim.cmd.colorscheme(colorscheme)
+
 -----------------------------------------------------------
 -- General
 -----------------------------------------------------------
@@ -123,6 +127,12 @@ vim.cmd([[
 let g:LanguageClient_serverCommands = {
 \ 'sql': ['sql-language-server', 'up', '--method', 'stdio'],
 \ }
+]])
+
+-- Enable folding, but don't collapse folds by default.
+vim.cmd([[
+set foldmethod=indent
+set foldlevelstart=99
 ]])
 
 -- Github copilot
