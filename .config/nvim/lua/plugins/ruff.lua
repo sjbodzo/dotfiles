@@ -39,7 +39,7 @@ return {
     -- Configure `ruff-lsp`.
     -- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp
     -- For the default config, along with instructions on how to customize the settings
-    require('lspconfig').ruff_lsp.setup {
+    require('lspconfig').ruff.setup {
       on_attach = on_attach
     }
   end

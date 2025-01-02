@@ -36,7 +36,7 @@ return {
 
     lspconfig.lua_ls.setup {}
     lspconfig.nil_ls.setup {}
-    lspconfig.tsserver.setup {}
+    lspconfig.ts_ls.setup {}
     lspconfig.jsonnet_ls.setup{
     	settings = {
     		ext_vars = {},
@@ -58,7 +58,7 @@ return {
     	},
     }
 
-    local servers = { 'tsserver', 'lua_ls', 'jsonnet_ls', 'nil_ls' }
+    local servers = { 'ts_ls', 'lua_ls', 'jsonnet_ls', 'nil_ls' }
     for _, lsp in ipairs(servers) do
       lspconfig[lsp].setup {
         on_attach = on_attach,
