@@ -42,15 +42,14 @@ vim.g.rustaceanvim = {
         },
       },
     },
-  },
-  -- DAP configuration
-  dap = {
   }
 }
 
 return {
   'mrcjkb/rustaceanvim',
-  version = '^5', -- Recommended
+  dependencies = { "nvim-lua/plenary.nvim" },
+  version = '^6', -- Recommended
   lazy = false,   -- This plugin is already lazy
+  ft = { 'rust' },
   after = { "nvim-lspconfig" },
 }

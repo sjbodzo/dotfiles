@@ -69,6 +69,7 @@ bindkey "^U" backward-kill-line
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 [ -x "$(command -v pyenv)" ] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
 [ -x "$(command -v fnm)" ] && eval "$(fnm env --use-on-cd)"
+[ -x "$(command -v istioctl)" ] && export PATH="$PATH:/Users/jessbodzo/forge/bpam/istio-1.24.2/bin"
 
 # source multi-user nix for shell
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
