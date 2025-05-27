@@ -4,6 +4,7 @@ require('core.options')
 require('core.autocmds')
 require('core.lsp_diagnostic')
 
-vim.lsp.enable({
-  "rust-analyzer"
-})
+-- Disable when using rustaceanvim
+-- vim.lsp.enable({
+--   "rust-analyzer"
+-- })
