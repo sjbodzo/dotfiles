@@ -8,3 +8,5 @@ require('core.lsp_diagnostic')
 -- vim.lsp.enable({
 --   "rust-analyzer"
 -- })
+
+vim.lsp.enable('gopls')
