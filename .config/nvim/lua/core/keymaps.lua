@@ -109,7 +109,7 @@ lsp_map('zr', function() require('telekasten').rename_note() end)
 lsp_map('z', function() require('telekasten').panel() end)
 lsp_map('[', function() require('telekasten').insert_link({ i=true }) end)
 lsp_map('zt', function() require('telekasten').toggle_todo({ i=true }) end)
-lsp_map('#', function() require('telekasten').show_tags({i = true}) end)
+lsp_map('#', function() require('telekasten').show_tags({ i = true }) end)
 
 -- zettlekasten customize highlights
 -- https://github.com/nvim-telekasten/telekasten.nvim?tab=readme-ov-file#highlights-1

@@ -41,4 +41,4 @@ local opts = {
 }
 lazy.setup("plugins", opts)
 
-require("helpers.keys").map("n", "<leader>L", lazy.show, "Show Lazy")
+require("helpers.keys").map("n", "<leader>L", lazy.show, { desc = 'Show Lazy' })
