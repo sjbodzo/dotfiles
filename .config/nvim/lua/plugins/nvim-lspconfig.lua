@@ -7,7 +7,7 @@ return {
     -- after the language server attaches to the current buffer
     local on_attach = function(client, bufnr)
       -- Enable completion triggered by <c-x><c-o>
-      vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+      vim.api.nvim_set_option_value(bufnr, 'omnifunc', {'v:lua.vim.lsp.omnifunc'})
 
       -- Mappings.
       -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -34,10 +34,47 @@ return {
      -- end
     end
 
-    lspconfig.lua_ls.setup {}
-    lspconfig.nil_ls.setup {}
-    lspconfig.ts_ls.setup {}
-    lspconfig.jsonnet_ls.setup{
+    vim.lsp.config('lua_ls', {
+      default_config = {
+        cmd = { 'lua-language-server' },
+        filetypes = { 'lua' },
+        root_dir = require 'lspconfig.util'.root_pattern({
+           '.luarc.json',
+           '.luarc.jsonc',
+           '.luacheckrc',
+           '.stylua.toml',
+           'stylua.toml',
+           'selene.toml',
+           'selene.yml',
+           '.git',
+      }),
+        single_file_support = true,
+        log_level = vim.lsp.protocol.MessageType.Warning,
+      },
+    })
+
+    vim.lsp.config('nil_ls', {
+        default_config = {
+          cmd = { 'nil' },
+          filetypes = { 'nix' },
+          single_file_support = true,
+          root_dir = require 'lspconfig.util'.root_pattern('flake.nix', '.git'),
+        },
+        docs = {
+          description = [[
+      https://github.com/oxalica/nil
+
+      A new language server for Nix Expression Language.
+
+      If you are using Nix with Flakes support, run `nix profile install github:oxalica/nil` to install.
+      Check the repository README for more information.
+
+      _See an example config at https://github.com/oxalica/nil/blob/main/dev/nvim-lsp.nix._
+          ]],
+        }
+    })
+
+    vim.lsp.config('jsonnet_ls', {
     	settings = {
     		ext_vars = {},
     		formatting = {
@@ -56,11 +93,17 @@ return {
     			StripAllButComments = false,
     		},
     	},
-    }
+    })
 
-    local servers = { 'ts_ls', 'lua_ls', 'jsonnet_ls', 'nil_ls' }
+    vim.lsp.config('gopls', {
+      settings = {
+        ['gopls'] = {},
+      },
+    })
+
+    local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls' }
     for _, lsp in ipairs(servers) do
-      lspconfig[lsp].setup {
+      lspconfig[lsp].config {
         on_attach = on_attach,
       }
     end

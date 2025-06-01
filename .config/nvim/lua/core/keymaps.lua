@@ -1,16 +1,9 @@
-local keymap = vim.api.nvim_set_keymap
+local keymaps = require('core.keymaps')
+local map = keymaps.map
 
 -----------------------------------------------------------
 -- Define keymaps of Neovim and installed plugins.
 -----------------------------------------------------------
-
-local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true, silent = true }
-  if opts then
-    options = vim.tbl_extend('force', options, opts)
-  end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
 
 -- ensure we use homembrew copy of exuberant ctags
 vim.g.tagbar_ctags_bin = '/usr/local/bin/ctags'
@@ -18,12 +11,6 @@ vim.g.tagbar_ctags_bin = '/usr/local/bin/ctags'
 -----------------------------------------------------------
 -- Neovim shortcuts
 -----------------------------------------------------------
-
--- Disable arrow keys
--- map('', '<up>', '<nop>')
--- map('', '<down>', '<nop>')
--- map('', '<left>', '<nop>')
--- map('', '<right>', '<nop>')
 
 -- Map Esc to kk
 map('i', 'kk', '<Esc>')
@@ -91,111 +78,70 @@ local rel_live_grep = function ()
 end
 
 -- set key mappings
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', rel_live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
+keymaps.lsp_map('<leader>ff', builtin.find_files)
+keymaps.lsp_map('<leader>fg', rel_live_grep)
+keymaps.lsp_map('<leader>fb', builtin.buffers)
+keymaps.lsp_map('<leader>fh', builtin.help_tags)
 
 -- Language server key mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap = true, silent = true }
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-
---local lsp_flags = {
---  -- This is the default in Nvim 0.7+
---  debounce_text_changes = 150,
---}
---require('lspconfig')['pyright'].setup{
---    on_attach = on_attach,
---    flags = lsp_flags,
---}
---require('lspconfig')['tsserver'].setup{
---    on_attach = on_attach,
---    flags = lsp_flags,
---}
---require('lspconfig')['gopls'].setup{
---    on_attach = on_attach,
---    flags = lsp_flags,
---}
---require('lspconfig')['rust_analyzer'].setup{
---    on_attach = on_attach,
---    flags = lsp_flags,
---    -- Server-specific settings...
---    settings = {
---      ["rust-analyzer"] = {}
---    }
---}
+keymaps.lsp_map('<space>e', vim.diagnostic.open_float)
+keymaps.lsp_map(']d', vim.diagnostic.jump({count=1, float=true}))
+keymaps.lsp_map('[d', vim.diagnostic.jump({count=-1, float=true}))
+keymaps.lsp_map('<space>q', vim.diagnostic.setloclist)
 
 -- zettlekasten setup
+keymaps.lsp_map('zf', function() require('telekasten').find_notes() end)
+keymaps.lsp_map('zd', function() require('telekasten').find_daily_notes() end)
+keymaps.lsp_map('zg', function() require('telekasten').search_notes() end)
+keymaps.lsp_map('zz', function() require('telekasten').follow_link() end)
+keymaps.lsp_map('zT', function() require('telekasten').goto_today() end)
+keymaps.lsp_map('zW', function() require('telekasten').goto_thisweek() end)
+keymaps.lsp_map('zw', function() require('telekasten').find_weekly_notes() end)
+keymaps.lsp_map('zn', function() require('telekasten').new_note() end)
+keymaps.lsp_map('zN', function() require('telekasten').new_templated_note() end)
+keymaps.lsp_map('zy', function() require('telekasten').yank_notelink() end)
+keymaps.lsp_map('zc', function() require('telekasten').show_calendar() end)
+keymaps.lsp_map('zi', function() require('telekasten').paste_img_and_link() end)
+keymaps.lsp_map('zt', function() require('telekasten').toggle_todo() end)
+keymaps.lsp_map('zb', function() require('telekasten').show_backlinks() end)
+keymaps.lsp_map('zF', function() require('telekasten').find_friends() end)
+keymaps.lsp_map('zI', function() require('telekasten').insert_img_link({ i=true }) end)
+keymaps.lsp_map('zp', function() require('telekasten').preview_img() end)
+keymaps.lsp_map('zm', function() require('telekasten').browse_media() end)
+keymaps.lsp_map('za', function() require('telekasten').show_tags() end)
+keymaps.lsp_map('#', function() require('telekasten').show_tags() end)
+keymaps.lsp_map('zr', function() require('telekasten').rename_note() end)
+keymaps.lsp_map('z', function() require('telekasten').panel() end)
+keymaps.lsp_map('[', function() require('telekasten').insert_link({ i=true }) end)
+keymaps.lsp_map('zt', function() require('telekasten').toggle_todo({ i=true }) end)
+keymaps.lsp_map('#', function() require('telekasten').show_tags({i = true}) end)
+
+-- zettlekasten customize highlights
+-- https://github.com/nvim-telekasten/telekasten.nvim?tab=readme-ov-file#highlights-1
+--[[
+-- tkLink : the link title inside the brackets
+-- tkAliasedLink : the concealed portion of [[concealed link|link alias]]
+-- tkBrackets : the brackets surrounding the link title
+-- tkHighlight : ==highlighted== text (non-standard markdown)
+-- tkTag : well, tags
+--]]
 vim.cmd([[
-  nnoremap <leader>zf :lua require('telekasten').find_notes()<CR>
-  nnoremap <leader>zd :lua require('telekasten').find_daily_notes()<CR>
-  nnoremap <leader>zg :lua require('telekasten').search_notes()<CR>
-  nnoremap <leader>zz :lua require('telekasten').follow_link()<CR>
-  nnoremap <leader>zT :lua require('telekasten').goto_today()<CR>
-  nnoremap <leader>zW :lua require('telekasten').goto_thisweek()<CR>
-  nnoremap <leader>zw :lua require('telekasten').find_weekly_notes()<CR>
-  nnoremap <leader>zn :lua require('telekasten').new_note()<CR>
-  nnoremap <leader>zN :lua require('telekasten').new_templated_note()<CR>
-  nnoremap <leader>zy :lua require('telekasten').yank_notelink()<CR>
-  nnoremap <leader>zc :lua require('telekasten').show_calendar()<CR>
-  nnoremap <leader>zC :CalendarT<CR>
-  nnoremap <leader>zi :lua require('telekasten').paste_img_and_link()<CR>
-  nnoremap <leader>zt :lua require('telekasten').toggle_todo()<CR>
-  nnoremap <leader>zb :lua require('telekasten').show_backlinks()<CR>
-  nnoremap <leader>zF :lua require('telekasten').find_friends()<CR>
-  nnoremap <leader>zI :lua require('telekasten').insert_img_link({ i=true })<CR>
-  nnoremap <leader>zp :lua require('telekasten').preview_img()<CR>
-  nnoremap <leader>zm :lua require('telekasten').browse_media()<CR>
-  nnoremap <leader>za :lua require('telekasten').show_tags()<CR>
-  nnoremap <leader># :lua require('telekasten').show_tags()<CR>
-  nnoremap <leader>zr :lua require('telekasten').rename_note()<CR>
-
-  " on hesitation, bring up the panel
-  nnoremap <leader>z :lua require('telekasten').panel()<CR>
-
-  " we could define [[ in **insert mode** to call insert link
-  " inoremap [[ <cmd>:lua require('telekasten').insert_link()<CR>
-  " alternatively: leader [
-  inoremap <leader>[ <cmd>:lua require('telekasten').insert_link({ i=true })<CR>
-  inoremap <leader>zt <cmd>:lua require('telekasten').toggle_todo({ i=true })<CR>
-  inoremap <leader># <cmd>lua require('telekasten').show_tags({i = true})<cr>
-
   hi tklink ctermfg=72 guifg=#689d6a cterm=bold,underline gui=bold,underline
   hi tkBrackets ctermfg=gray guifg=gray
-
   hi tkHighlight ctermbg=yellow ctermfg=darkred cterm=bold guibg=yellow guifg=darkred gui=bold
-  " hi tkHighlight ctermbg=214 ctermfg=124 cterm=bold guibg=#fabd2f guifg=#9d0006 gui=bold
-
   hi link CalNavi CalRuler
   hi tkTagSep ctermfg=gray guifg=gray
   hi tkTag ctermfg=175 guifg=#d3869B
 ]])
 
 -- Copilot config (overwrite tab for nvim-cmp to use)
-keymap('i', '<C-\\>', '<Plug>(copilot-dismiss)',
-  { silent = true, noremap = true, desc = "Dismiss copilot suggestion" })
-keymap('i', '<C-k>', 'copilot#Previous()', { expr = true, silent = true, desc =
-"Previous copilot suggestion" })
-keymap('i', '<C-j>', 'copilot#Next()', { expr = true, silent = true, desc = "Next copilot suggestion" })
-keymap('i', '<C-s>', 'copilot#Suggest()', { expr = true, silent = true, desc = "Suggest copilot" })
-keymap('i', '<C-a>', 'copilot#Accept("<CR>")',
-  { expr = true, silent = true, desc = "Accept copilot suggestion" })
+map('i', '<C-\\>', '<Plug>(copilot-dismiss)', "Dismiss copilot suggestion")
+map('i', '<C-k>', 'copilot#Previous()', "Previous copilot suggestion")
+map('i', '<C-j>', 'copilot#Next()', "Next copilot suggestion")
+map('i', '<C-s>', 'copilot#Suggest()', "Suggest copilot")
+map('i', '<C-a>', 'copilot#Accept("<CR>")', "Accept copilot suggestion")
 
 -- Markdown Preview
 vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
 vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
-
--- Quicknote shortcuts
---keymap("n", "<leader>sn", "<cmd>:lua require('quicknote').ShowNoteSigns()<CR>",{ noremap = true, desc = "New note at CWD" })
---keymap("n", "<leader>cn", "<cmd>:lua require('quicknote').NewNoteAtCWD()<CR>",{ noremap = true, desc = "New note at CWD" })
---keymap("n", "<leader>pn", "<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<CR>",{ noremap = true, desc = "Create quick note at line" })
---keymap("n", "<leader>on", "<cmd>:lua require('quicknote').OpenNoteAtCurrentLine()<CR>",{ noremap = true, desc = "Open note at line" })
---keymap("n", "<leader>ln", "<cmd>:lua require('quicknote').ListNotesForCWD()<CR>",{ noremap = true, desc = "List notes at CWD" })
---keymap("n", "<leader>rn", "<cmd>:lua require('quicknote').DeleteNoteAtCurrentLine()<CR>",{ noremap = true, desc = "Delete note at line" })
---keymap("n", "<leader>jn", "<cmd>:lua require('quicknote').JumpToNextNote()<CR>",{ noremap = true, desc = "Jump to next note" })
---keymap("n", "<leader>jN", "<cmd>:lua require('quicknote').JumpToPreviousNote()<CR>",{ noremap = true, desc = "Jump to previous note" })

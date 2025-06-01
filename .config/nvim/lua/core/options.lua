@@ -99,11 +99,11 @@ end
 -- menuone: popup even when there's only one match
 -- noinsert: Do not insert text until a selection is made
 -- noselect: Do not select, force to select one from the menu
--- shortness: avoid showing extra messages when using completion
+-- shortmess: avoid showing extra messages when using completion
 -- updatetime: set updatetime for CursorHold
 vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
 vim.opt.shortmess = vim.opt.shortmess + { c = true}
-vim.api.nvim_set_option('updatetime', 300)
+vim.api.nvim_set_option_value('updatetime', 300, {})
 
 -- Fixed column for diagnostics to appear
 -- Show autodiagnostic popup on cursor hover_range
@@ -148,6 +148,7 @@ local M = {}
 
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
+
 -- function to create a list of commands and convert them to autocommands
 -------- This function is taken from https://github.com/norcalli/nvim_utils
 function M.nvim_create_augroups(definitions)
@@ -155,14 +156,13 @@ function M.nvim_create_augroups(definitions)
         api.nvim_command('augroup '..group_name)
         api.nvim_command('autocmd!')
         for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+            local command = table.concat(vim.iter({'autocmd', def}):flatten():totable(), ' ')
             api.nvim_command(command)
         end
         api.nvim_command('augroup END')
     end
 end
 local autoCommands = {
-    -- other autocommands
     open_folds = {
         {"BufReadPost,FileReadPost", "*", "normal zR"}
     }
