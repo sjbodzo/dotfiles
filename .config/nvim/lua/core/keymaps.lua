@@ -130,11 +130,11 @@ vim.cmd([[
 ]])
 
 -- Copilot config (overwrite tab for nvim-cmp to use)
-map('i', '<C-\\>', '<Plug>(copilot-dismiss)', "Dismiss copilot suggestion")
-map('i', '<C-k>', 'copilot#Previous()', "Previous copilot suggestion")
-map('i', '<C-j>', 'copilot#Next()', "Next copilot suggestion")
-map('i', '<C-s>', 'copilot#Suggest()', "Suggest copilot")
-map('i', '<C-a>', 'copilot#Accept("<CR>")', "Accept copilot suggestion")
+map('i', '<C-\\>', '<Plug>(copilot-dismiss)', { desc = 'Dismiss copilot suggestion' })
+map('i', '<C-k>', 'copilot#Previous()', { desc = 'Previous copilot suggestion' })
+map('i', '<C-j>', 'copilot#Next()', { desc = 'Next copilot suggestion' })
+map('i', '<C-s>', 'copilot#Suggest()', { desc = 'Suggest copilot' })
+map('i', '<C-a>', 'copilot#Accept("<CR>")', { desc = 'Accept copilot suggestion' })
 
 -- Markdown Preview
 vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
