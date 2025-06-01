@@ -1,5 +1,6 @@
-local keymaps = require('core.keymaps')
+local keymaps = require('helper.keys')
 local map = keymaps.map
+local lsp_map = keymaps.lsp_map
 
 -----------------------------------------------------------
 -- Define keymaps of Neovim and installed plugins.
@@ -78,44 +79,44 @@ local rel_live_grep = function ()
 end
 
 -- set key mappings
-keymaps.lsp_map('<leader>ff', builtin.find_files)
-keymaps.lsp_map('<leader>fg', rel_live_grep)
-keymaps.lsp_map('<leader>fb', builtin.buffers)
-keymaps.lsp_map('<leader>fh', builtin.help_tags)
+lsp_map('<leader>ff', builtin.find_files)
+lsp_map('<leader>fg', rel_live_grep)
+lsp_map('<leader>fb', builtin.buffers)
+lsp_map('<leader>fh', builtin.help_tags)
 
 -- Language server key mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-keymaps.lsp_map('<space>e', vim.diagnostic.open_float)
-keymaps.lsp_map(']d', vim.diagnostic.jump({count=1, float=true}))
-keymaps.lsp_map('[d', vim.diagnostic.jump({count=-1, float=true}))
-keymaps.lsp_map('<space>q', vim.diagnostic.setloclist)
+lsp_map('<space>e', vim.diagnostic.open_float)
+lsp_map(']d', vim.diagnostic.jump({count=1, float=true}))
+lsp_map('[d', vim.diagnostic.jump({count=-1, float=true}))
+lsp_map('<space>q', vim.diagnostic.setloclist)
 
 -- zettlekasten setup
-keymaps.lsp_map('zf', function() require('telekasten').find_notes() end)
-keymaps.lsp_map('zd', function() require('telekasten').find_daily_notes() end)
-keymaps.lsp_map('zg', function() require('telekasten').search_notes() end)
-keymaps.lsp_map('zz', function() require('telekasten').follow_link() end)
-keymaps.lsp_map('zT', function() require('telekasten').goto_today() end)
-keymaps.lsp_map('zW', function() require('telekasten').goto_thisweek() end)
-keymaps.lsp_map('zw', function() require('telekasten').find_weekly_notes() end)
-keymaps.lsp_map('zn', function() require('telekasten').new_note() end)
-keymaps.lsp_map('zN', function() require('telekasten').new_templated_note() end)
-keymaps.lsp_map('zy', function() require('telekasten').yank_notelink() end)
-keymaps.lsp_map('zc', function() require('telekasten').show_calendar() end)
-keymaps.lsp_map('zi', function() require('telekasten').paste_img_and_link() end)
-keymaps.lsp_map('zt', function() require('telekasten').toggle_todo() end)
-keymaps.lsp_map('zb', function() require('telekasten').show_backlinks() end)
-keymaps.lsp_map('zF', function() require('telekasten').find_friends() end)
-keymaps.lsp_map('zI', function() require('telekasten').insert_img_link({ i=true }) end)
-keymaps.lsp_map('zp', function() require('telekasten').preview_img() end)
-keymaps.lsp_map('zm', function() require('telekasten').browse_media() end)
-keymaps.lsp_map('za', function() require('telekasten').show_tags() end)
-keymaps.lsp_map('#', function() require('telekasten').show_tags() end)
-keymaps.lsp_map('zr', function() require('telekasten').rename_note() end)
-keymaps.lsp_map('z', function() require('telekasten').panel() end)
-keymaps.lsp_map('[', function() require('telekasten').insert_link({ i=true }) end)
-keymaps.lsp_map('zt', function() require('telekasten').toggle_todo({ i=true }) end)
-keymaps.lsp_map('#', function() require('telekasten').show_tags({i = true}) end)
+lsp_map('zf', function() require('telekasten').find_notes() end)
+lsp_map('zd', function() require('telekasten').find_daily_notes() end)
+lsp_map('zg', function() require('telekasten').search_notes() end)
+lsp_map('zz', function() require('telekasten').follow_link() end)
+lsp_map('zT', function() require('telekasten').goto_today() end)
+lsp_map('zW', function() require('telekasten').goto_thisweek() end)
+lsp_map('zw', function() require('telekasten').find_weekly_notes() end)
+lsp_map('zn', function() require('telekasten').new_note() end)
+lsp_map('zN', function() require('telekasten').new_templated_note() end)
+lsp_map('zy', function() require('telekasten').yank_notelink() end)
+lsp_map('zc', function() require('telekasten').show_calendar() end)
+lsp_map('zi', function() require('telekasten').paste_img_and_link() end)
+lsp_map('zt', function() require('telekasten').toggle_todo() end)
+lsp_map('zb', function() require('telekasten').show_backlinks() end)
+lsp_map('zF', function() require('telekasten').find_friends() end)
+lsp_map('zI', function() require('telekasten').insert_img_link({ i=true }) end)
+lsp_map('zp', function() require('telekasten').preview_img() end)
+lsp_map('zm', function() require('telekasten').browse_media() end)
+lsp_map('za', function() require('telekasten').show_tags() end)
+lsp_map('#', function() require('telekasten').show_tags() end)
+lsp_map('zr', function() require('telekasten').rename_note() end)
+lsp_map('z', function() require('telekasten').panel() end)
+lsp_map('[', function() require('telekasten').insert_link({ i=true }) end)
+lsp_map('zt', function() require('telekasten').toggle_todo({ i=true }) end)
+lsp_map('#', function() require('telekasten').show_tags({i = true}) end)
 
 -- zettlekasten customize highlights
 -- https://github.com/nvim-telekasten/telekasten.nvim?tab=readme-ov-file#highlights-1
