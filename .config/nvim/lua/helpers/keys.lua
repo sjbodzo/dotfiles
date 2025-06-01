@@ -1,7 +1,7 @@
 local M = {}
 
-M.map = function(mode, lhs, rhs, desc)
-	vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc })
+M.map = function(mode, lhs, rhs, opts)
+	vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 M.lsp_map = function(lhs, rhs, bufnr, opts)
@@ -9,7 +9,7 @@ M.lsp_map = function(lhs, rhs, bufnr, opts)
   if opts then
     options = vim.tbl_extend('force', options, opts)
   end
-	M.map("n", lhs, rhs, opts)
+	M.map("n", lhs, rhs, options)
 end
 
 M.dap_map = function(mode, lhs, rhs, desc)
