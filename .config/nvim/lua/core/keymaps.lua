@@ -3,13 +3,6 @@ local map = keymaps.map
 local lsp_map = keymaps.lsp_map
 
 -----------------------------------------------------------
--- Define keymaps of Neovim and installed plugins.
------------------------------------------------------------
-
--- ensure we use homembrew copy of exuberant ctags
-vim.g.tagbar_ctags_bin = '/usr/local/bin/ctags'
-
------------------------------------------------------------
 -- Neovim shortcuts
 -----------------------------------------------------------
 
