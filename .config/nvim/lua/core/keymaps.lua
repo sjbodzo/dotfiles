@@ -48,7 +48,7 @@ map('n', '<leader>q', ':qa!<CR>')
 
 -- Terminal mappings
 -- map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('n', '<C-t>', ':tabnew<CR>', { noremap = true }) -- open
+map('n', '<C-t>', ':tabnew<CR>') -- open
 map('t', '<Esc>', '<C-\\><C-n>')                   -- exit
 
 -- NvimTree
