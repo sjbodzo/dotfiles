@@ -111,9 +111,7 @@ return {
 
     local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls' }
     for _, lsp in ipairs(servers) do
-      vim.lsp.config[lsp] {
-        on_attach = on_attach,
-      }
+      vim.lsp.config[lsp].on_attach = on_attach
     end
 
   end
