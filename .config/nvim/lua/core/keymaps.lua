@@ -1,4 +1,4 @@
-local keymaps = require('helper.keys')
+local keymaps = require('helpers.keys')
 local map = keymaps.map
 local lsp_map = keymaps.lsp_map
 
