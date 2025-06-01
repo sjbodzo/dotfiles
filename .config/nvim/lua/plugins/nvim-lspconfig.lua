@@ -103,11 +103,11 @@ return {
     	},
     })
 
-    vim.lsp.config('gopls', {
-      settings = {
-        ['gopls'] = {},
-      },
-    })
+    -- vim.lsp.config('gopls', {
+    --   settings = {
+    --     ['gopls'] = {},
+    --   },
+    -- })
 
     local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls' }
     for _, lsp in ipairs(servers) do
