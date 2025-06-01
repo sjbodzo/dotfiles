@@ -87,8 +87,8 @@ lsp_map('<leader>fh', builtin.help_tags)
 -- Language server key mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 lsp_map('<space>e', vim.diagnostic.open_float)
-lsp_map(']d', vim.diagnostic.jump({count=1, float=true}))
-lsp_map('[d', vim.diagnostic.jump({count=-1, float=true}))
+lsp_map(']d', function() vim.diagnostic.jump({count=1, float=true}) end)
+lsp_map('[d', function() vim.diagnostic.jump({count=-1, float=true}) end)
 lsp_map('<space>q', vim.diagnostic.setloclist)
 
 -- zettlekasten setup
