@@ -1,6 +1,14 @@
 return {
   "neovim/nvim-lspconfig",
   config = function()
+    vim.lsp.enable({
+    	'lua_ls',
+    	'jsonnet_ls',
+    	'nil_ls',
+    	'gopls',
+            -- 'rust-analyzer'  -- Disable when using rustaceanvim
+    })
+
     local lspconfig = require("lspconfig")
 
     -- Use an on_attach function to only map the following keys
@@ -103,7 +111,7 @@ return {
 
     local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls' }
     for _, lsp in ipairs(servers) do
-      lspconfig[lsp].config {
+      vim.lsp.config[lsp] {
         on_attach = on_attach,
       }
     end
