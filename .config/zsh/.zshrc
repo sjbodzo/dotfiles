@@ -4,6 +4,7 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Load the completion system before sourcing completions
 autoload -Uz compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
 
 # load ssh key(s)
 ssh-add -q --apple-use-keychain $HOME/.ssh/github_id_ed25519
@@ -64,6 +65,8 @@ bindkey "^U" backward-kill-line
 [ -x "$(command -v kubectl krew)" ] && \. <(kubectl krew completion zsh)
 [ -x "$(command -v kind)" ] && \. <(kind completion zsh)
 [ -x "$(command -v fzf)" ] && \. <(fzf --zsh) # only on fzf > 0.48
+[ -x "$(command -v brew)" ] && [ -x "$(command -v az)" ] \
+    && \. "$(brew --prefix)/etc/bash_completion.d/az"
 
 # Configure helpers (s/w project tools)
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
