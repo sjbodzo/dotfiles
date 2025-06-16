@@ -1,0 +1,29 @@
+[user]
+name = "Jess Bodzo"
+email = "jess.bodzo@ditto.com"
+
+[aliases]
+# A convenient egocentric log alias
+l = [
+  "log",
+  "--revisions",
+  "fork_point(@ | latest(mine(), 3) | bookmarks(main))::(bookmarks(main) | @ | mine())",
+]
+# Push all your tracked bookmarks to their corresponding git branches
+# Since `jj` rebases all child changes automagically, this is helpful
+# when you update the root of a PR stack.
+update = ["git", "push", "--tracked"]
+# Push the current change to git.
+# Note that a bookmark must exist to serve as the branch name for git.
+push = ["git", "push", "--change", "@"]
+
+[git]
+sign-on-push = true
+
+[signing]
+behavior = "own"
+backend = "gpg"
+key = "7C332F843B5B80EE"
+
+[ui]
+show-cryptographic-signatures = true
