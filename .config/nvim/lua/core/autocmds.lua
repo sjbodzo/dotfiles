@@ -96,6 +96,17 @@ autocmd('FileType', {
   end,
 })
 
+
+autocmd('FileType', {
+  pattern = { 'Tiltfile' },
+  callback = function()
+    vim.lsp.start({
+      name = 'tilt',
+      cmd = { 'tilt', 'lsp', 'start' },
+    })
+  end,
+})
+
 -- Golang format on save
 autocmd("BufWritePre", {
   pattern = "*.go",

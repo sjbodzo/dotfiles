@@ -6,7 +6,8 @@ return {
     	'jsonnet_ls',
     	'nil_ls',
     	'gopls',
-            -- 'rust-analyzer'  -- Disable when using rustaceanvim
+      'tilt_ls',
+      -- 'rust-analyzer' -- Disable when using rustaceanvim
     })
 
     local lspconfig = require("lspconfig")
@@ -43,7 +44,6 @@ return {
     end
 
     vim.lsp.config('lua_ls', {
-      default_config = {
         cmd = { 'lua-language-server' },
         filetypes = { 'lua' },
         root_dir = require 'lspconfig.util'.root_pattern({
@@ -58,28 +58,37 @@ return {
       }),
         single_file_support = true,
         log_level = vim.lsp.protocol.MessageType.Warning,
-      },
     })
 
     vim.lsp.config('nil_ls', {
-        default_config = {
-          cmd = { 'nil' },
-          filetypes = { 'nix' },
-          single_file_support = true,
-          root_dir = require 'lspconfig.util'.root_pattern('flake.nix', '.git'),
-        },
-        docs = {
-          description = [[
-      https://github.com/oxalica/nil
+      cmd = { 'nil' },
+      filetypes = { 'nix' },
+      single_file_support = true,
+      root_dir = require 'lspconfig.util'.root_pattern('flake.nix', '.git'),
+      docs = {
+        description = [[
+          https://github.com/oxalica/nil
 
-      A new language server for Nix Expression Language.
+          A new language server for Nix Expression Language.
 
-      If you are using Nix with Flakes support, run `nix profile install github:oxalica/nil` to install.
-      Check the repository README for more information.
+          If you are using Nix with Flakes support, run `nix profile install github:oxalica/nil` to install.
+          Check the repository README for more information.
 
-      _See an example config at https://github.com/oxalica/nil/blob/main/dev/nvim-lsp.nix._
+          _See an example config at https://github.com/oxalica/nil/blob/main/dev/nvim-lsp.nix._
+              ]]
+      },
+    })
+
+    vim.lsp.config('tilt_ls', {
+      cmd = { 'tilt', 'lsp', 'start' },
+      filetypes = { 'starlark', 'tiltfile' },
+      root_markers = { 'Tiltfile' },
+      docs = {
+        description = [[
+          https://docs.stack.build/docs/vscode/starlark-language-server
           ]],
-        }
+      },
+      single_file_support = true,
     })
 
     vim.lsp.config('jsonnet_ls', {
@@ -109,7 +118,7 @@ return {
     --   },
     -- })
 
-    local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls' }
+    local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls', 'tilt_ls' }
     for _, lsp in ipairs(servers) do
       vim.lsp.config[lsp].on_attach = on_attach
     end

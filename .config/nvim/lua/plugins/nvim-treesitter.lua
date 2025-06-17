@@ -13,25 +13,8 @@ return {
       return
     end
 
-    local nvim_treesitter_configs = require('nvim-treesitter.configs')
-
-    -- See: https://github.com/nvim-treesitter/nvim-treesitter#quickstart
     nvim_treesitter.setup {
-      -- A list of parser names, or "all"
-      ensure_installed = {
-        'bash', 'c', 'cpp', 'css', 'html', 'javascript', 'json', 'lua', 'python',
-        'rust', 'typescript', 'vim', 'yaml', 'go',
-      },
-      -- Install parsers synchronously (only applied to `ensure_installed`)
-      sync_install = false,
-      highlight = {
-        -- `false` will disable the whole extension
-        enable = true,
-      },
-    }
-
-    nvim_treesitter_configs.setup {
-      ensure_installed = { "lua", "rust", "toml", "python", "typescript", "go", "yaml", "go" },
+      ensure_installed = { "bash", "cpp", "css", "html", "javascript", "json", "vim", "lua", "rust", "toml", "python", "typescript", "yaml", "go", "starlark" },
       auto_install = true,
       highlight = {
         enable = true,
