@@ -6,5 +6,6 @@ vim.filetype.add({
   pattern = {
     ["Tiltfile*"] = "tiltfile",
     ["tiltfile*"] = "tiltfile",
+    ["*.Tiltfile"] = "tiltfile",
   }
 })
