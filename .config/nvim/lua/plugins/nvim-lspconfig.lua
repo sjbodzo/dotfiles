@@ -7,6 +7,8 @@ return {
     	'nil_ls',
     	'gopls',
       'tilt_ls',
+      'yamlls',
+      'bashls',
       -- 'rust-analyzer' -- Disable when using rustaceanvim
     })
 
@@ -43,21 +45,35 @@ return {
      -- end
     end
 
+    vim.lsp.config('yamlls', {
+      cmd = { 'yaml-language-server', '--stdio' },
+      filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab', 'yaml.helm-values' },
+      single_file_support = true,
+      settings = {
+        redhat = { telemetry = { enabled = false } },
+        yaml = {
+          schemas = {
+            ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+          },
+        }
+      },
+    })
+
     vim.lsp.config('lua_ls', {
-        cmd = { 'lua-language-server' },
-        filetypes = { 'lua' },
-        root_dir = require 'lspconfig.util'.root_pattern({
-           '.luarc.json',
-           '.luarc.jsonc',
-           '.luacheckrc',
-           '.stylua.toml',
-           'stylua.toml',
-           'selene.toml',
-           'selene.yml',
-           '.git',
+      cmd = { 'lua-language-server' },
+      filetypes = { 'lua' },
+      root_dir = require 'lspconfig.util'.root_pattern({
+         '.luarc.json',
+         '.luarc.jsonc',
+         '.luacheckrc',
+         '.stylua.toml',
+         'stylua.toml',
+         'selene.toml',
+         'selene.yml',
+         '.git',
       }),
-        single_file_support = true,
-        log_level = vim.lsp.protocol.MessageType.Warning,
+      single_file_support = true,
+      log_level = vim.lsp.protocol.MessageType.Warning,
     })
 
     vim.lsp.config('nil_ls', {
@@ -118,7 +134,7 @@ return {
     --   },
     -- })
 
-    local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls', 'tilt_ls' }
+    local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls', 'tilt_ls', 'bashls', 'yamlls' }
     for _, lsp in ipairs(servers) do
       vim.lsp.config[lsp].on_attach = on_attach
     end
