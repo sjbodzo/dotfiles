@@ -19,6 +19,7 @@ push = ["git", "push", "--change", "@"]
 
 [git]
 sign-on-push = true
+auto-local-bookmark = true
 
 [signing]
 behavior = "own"
