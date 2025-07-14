@@ -73,6 +73,8 @@ bindkey "^U" backward-kill-line
 [ -x "$(command -v pyenv)" ] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init -)"
 [ -x "$(command -v fnm)" ] && eval "$(fnm env --use-on-cd)"
 [ -x "$(command -v istioctl)" ] && export PATH="$PATH:/Users/jessbodzo/forge/bpam/istio-1.24.2/bin"
+[ -s "${NVM_DIR:-"$HOME/.nvm"}/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "${NVM_DIR:-"$HOME/.nvm"}/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # source multi-user nix for shell
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
