@@ -75,6 +75,7 @@ bindkey "^U" backward-kill-line
 [ -x "$(command -v istioctl)" ] && export PATH="$PATH:/Users/jessbodzo/forge/bpam/istio-1.24.2/bin"
 [ -s "${NVM_DIR:-"$HOME/.nvm"}/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "${NVM_DIR:-"$HOME/.nvm"}/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -x "$(command -v aws_completer)" ] && complete -C '/etc/profiles/per-user/jessbodzo/bin/aws_completer' # use aws cli autocomplete installed in nix profile
 
 # source multi-user nix for shell
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
