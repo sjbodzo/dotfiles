@@ -107,25 +107,54 @@ return {
       single_file_support = true,
     })
 
-    vim.lsp.config('jsonnet_ls', {
-    	settings = {
-    		ext_vars = {},
-    		formatting = {
-    			-- default values
-    			Indent              = 2,
-    			MaxBlankLines       = 2,
-    			StringStyle         = 'single',
-    			CommentStyle        = 'slash',
-    			PrettyFieldNames    = true,
-    			PadArrays           = false,
-    			PadObjects          = true,
-    			SortImports         = true,
-    			UseImplicitPlus     = true,
-    			StripEverything     = false,
-    			StripComments       = false,
-    			StripAllButComments = false,
-    		},
-    	},
+    -- vim.lsp.config('jsonnet_ls', {
+    -- 	settings = {
+    -- 		ext_vars = {},
+    -- 		formatting = {
+    -- 			-- default values
+    -- 			Indent              = 2,
+    -- 			MaxBlankLines       = 2,
+    -- 			StringStyle         = 'single',
+    -- 			CommentStyle        = 'slash',
+    -- 			PrettyFieldNames    = true,
+    -- 			PadArrays           = false,
+    -- 			PadObjects          = true,
+    -- 			SortImports         = true,
+    -- 			UseImplicitPlus     = true,
+    -- 			StripEverything     = false,
+    -- 			StripComments       = false,
+    -- 			StripAllButComments = false,
+    -- 		},
+    -- 	},
+    -- })
+
+    vim.lsp.config('helm_ls', {
+      logLevel = "info",
+      valuesFiles = {
+        mainValuesFile = "values.yaml",
+        lintOverlayValuesFile = "values.lint.yaml",
+        additionalValuesFilesGlobPattern = "*values*.yaml"
+      },
+      helmLint = {
+        enabled = true,
+        ignoredMessages = {},
+      },
+      yamlls = {
+        enabled = true,
+        enabledForFilesGlob = "*.{yaml,yml}",
+        diagnosticsLimit = 50,
+        showDiagnosticsDirectly = false,
+        path = "yaml-language-server",
+        initTimeoutSeconds = 3,
+        config = {
+          schemas = {
+            kubernetes = "templates/**",
+          },
+          completion = true,
+          hover = true,
+          -- any other config from https://github.com/redhat-developer/yaml-language-server#language-server-settings
+        }
+      }
     })
 
     -- vim.lsp.config('gopls', {
@@ -134,7 +163,7 @@ return {
     --   },
     -- })
 
-    local servers = { 'lua_ls', 'jsonnet_ls', 'nil_ls', 'gopls', 'tilt_ls', 'bashls', 'yamlls' }
+    local servers = { 'lua_ls', 'helm_ls', 'nil_ls', 'gopls', 'tilt_ls', 'bashls', 'yamlls' }
     for _, lsp in ipairs(servers) do
       vim.lsp.config[lsp].on_attach = on_attach
     end

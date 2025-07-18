@@ -9,3 +9,11 @@ vim.filetype.add({
     ["*.Tiltfile"] = "tiltfile",
   }
 })
+
+-- manually add helm filetype detection to differentiate from regular yaml
+-- as otherwise the editor makes your eyes bleed on template blocks
+vim.filetype.add({
+  pattern = {
+    [".*/templates/.*%.yaml"] = "helm",
+  }
+})
