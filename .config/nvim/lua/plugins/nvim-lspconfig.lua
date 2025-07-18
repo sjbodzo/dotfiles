@@ -9,6 +9,7 @@ return {
       'tilt_ls',
       'yamlls',
       'bashls',
+      'helm_ls',
       -- 'rust-analyzer' -- Disable when using rustaceanvim
     })
 
