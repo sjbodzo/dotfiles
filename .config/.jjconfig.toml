@@ -3,6 +3,15 @@ name = "Jess Bodzo"
 email = "jess.bodzo@ditto.com"
 
 [aliases]
+# Lazy way to make a commit, repoint the trunk at it and push via git
+# This a common workflow in personal repos for managing nix-darwin config
+on-main = ["util", "exec", "--", "bash", "-c", """
+set -euo pipefail
+echo "Adding commit and bumping main..."
+jj commit -m "$@"
+jj bookmark s main -r @-
+jj git push -b main
+""", ""]
 # A convenient egocentric log alias
 l = [
   "log",
