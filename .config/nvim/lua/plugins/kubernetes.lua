@@ -1,5 +1,8 @@
 return {
   'diogo464/kubernetes.nvim',
+  -- disabled due to issues with nix management preventing execution in the plugin layer;
+  -- ditching in favor of datree CRD extractor and local file stubbing for looking up manifests
+  enabled = false,
   opts = {
     -- this can help with autocomplete. it sets the `additionalProperties` field on type definitions to false if it is not already present.
     schema_strict = true,
