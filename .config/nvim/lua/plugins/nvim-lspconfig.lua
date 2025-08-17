@@ -3,14 +3,12 @@ return {
   config = function()
     vim.lsp.enable({
     	'lua_ls',
-    	'jsonnet_ls',
     	'nil_ls',
     	'gopls',
       'tilt_ls',
       'yamlls',
       'bashls',
       'helm_ls',
-      -- 'rust-analyzer' -- Disable when using rustaceanvim
     })
 
     local lspconfig = require("lspconfig")
@@ -108,27 +106,6 @@ return {
       single_file_support = true,
     })
 
-    -- vim.lsp.config('jsonnet_ls', {
-    -- 	settings = {
-    -- 		ext_vars = {},
-    -- 		formatting = {
-    -- 			-- default values
-    -- 			Indent              = 2,
-    -- 			MaxBlankLines       = 2,
-    -- 			StringStyle         = 'single',
-    -- 			CommentStyle        = 'slash',
-    -- 			PrettyFieldNames    = true,
-    -- 			PadArrays           = false,
-    -- 			PadObjects          = true,
-    -- 			SortImports         = true,
-    -- 			UseImplicitPlus     = true,
-    -- 			StripEverything     = false,
-    -- 			StripComments       = false,
-    -- 			StripAllButComments = false,
-    -- 		},
-    -- 	},
-    -- })
-
     vim.lsp.config('helm_ls', {
       logLevel = "info",
       valuesFiles = {
@@ -157,12 +134,6 @@ return {
         }
       }
     })
-
-    -- vim.lsp.config('gopls', {
-    --   settings = {
-    --     ['gopls'] = {},
-    --   },
-    -- })
 
     local servers = { 'lua_ls', 'helm_ls', 'nil_ls', 'gopls', 'tilt_ls', 'bashls', 'yamlls' }
     for _, lsp in ipairs(servers) do
