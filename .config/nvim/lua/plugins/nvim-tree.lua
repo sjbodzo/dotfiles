@@ -138,7 +138,7 @@ return {
       },
       filters = {
         dotfiles = false,
-        custom = { 'target/debug/incremental', '.direnv', '.git' },
+        custom = {},
         exclude = {},
       },
       filesystem_watchers = {
