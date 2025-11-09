@@ -6,36 +6,37 @@ setopt HIST_IGNORE_ALL_DUPS
 autoload -Uz compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 
-# load ssh key(s)
-ssh-add -q --apple-use-keychain $HOME/.ssh/github_id_ed25519
+for key in $HOME/.ssh/id_*(N.) $HOME/.ssh/*_id_*(N.); do
+    [[ "$key" != *.pub ]] && ssh-add -q --apple-use-keychain "$key" 2>/dev/null
+done
 
 # configure $PATH
 path=(
-    ${KREW_ROOT:-$HOME/.krew}/bin
-    $HOME/.cargo/bin
-    $(go env GOPATH)/bin
     $HOME/.local/bin
-    /opt/homebrew/bin
-#    /opt/homebrew/opt/openssl@3/bin
-    $HOME/.poetry/bin
-    /Library/Frameworks/Python.framework/Versions/3.10/bin
     /bin
     /usr/bin
     $path
 )
 
-# configure my zsh function path
+(( $+commands[poetry] )) && path=("$HOME/.poetry/bin" $path)
+# Add all Python framework versions (highest version first)
+for pybin in /Library/Frameworks/Python.framework/Versions/*/bin(Non); do
+    path=("$pybin" $path)
+done
+(( $+commands[go] )) && path=("$(go env GOPATH)/bin" $path)
+(( $+commands[krew] )) && path=("${KREW_ROOT:-$HOME/.krew}/bin" $path)
+(( $+commands[cargo] )) && path=("$HOME/.cargo/bin" $path)
+(( $+commands[brew] )) && path=("/opt/homebrew/bin" $path)
+
 fpath=(
 	$HOME/.config/zsh/.zfunc                             # my custom functions
-    "${fpath[@]}"                                        # expand existing fpath to not blow it away
+	"${fpath[@]}"                                        # expand existing fpath to not blow it away
 )
 autoload -Uz $fpath[1]/*                                 # source my custom functions
 
 [[ -e "$HOME/.zprofile" ]] && \. $HOME/.zprofile         # source shell aliases
 
-[ -x "$(command -v starship)" ] && eval "$(starship init zsh)" # override default prompt
-
-bindkey -v                  # vim bindings in zsh
+bindkey -v                                               # vim bindings in zsh
 
 [ -f $HOME/.fzf.zsh ] && \. $HOME/.fzf.zsh
 bindkey "${terminfo[kcuu1]}" fzf-history-widget
@@ -46,8 +47,8 @@ zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 # set dynamic coloring for all styles for ls colors
@@ -62,7 +63,7 @@ bindkey "^U" backward-kill-line
 # Source completions
 [ -x "$(command -v minikube)" ] && \. <(minikube completion zsh)
 [ -x "$(command -v kubectl)" ] && \. <(kubectl completion zsh)
-[ -x "$(command -v kubectl krew)" ] && \. <(kubectl krew completion zsh)
+[ -x "$(command -v kubectl-krew)" ] && \. <(kubectl krew completion zsh)
 [ -x "$(command -v kind)" ] && \. <(kind completion zsh)
 [ -x "$(command -v fzf)" ] && \. <(fzf --zsh) # only on fzf > 0.48
 [ -x "$(command -v brew)" ] && [ -x "$(command -v az)" ] \
@@ -86,3 +87,6 @@ fi
 if [ -e '~/.nix-profile/etc/profile.d/nix-darwin.sh' ]; then
     . '~/.nix-profile/etc/profile.d/nix-darwin.sh'
 fi
+
+# Initialize starship last to properly wrap zle widgets
+[ -x "$(command -v starship)" ] && eval "$(starship init zsh)"
