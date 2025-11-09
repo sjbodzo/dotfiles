@@ -35,6 +35,11 @@ map('n', '<leader>s', ':w<CR>')
 -- Close all windows and exit from Neovim with <leader> and q
 map('n', '<leader>q', ':qa!<CR>')
 
+-- Better buffer switching
+map('n', '<S-h>', ':bprevious<CR>')
+map('n', '<S-l>', ':bnext<CR>')
+map('n', '<leader>bd', ':bdelete<CR>')
+
 -----------------------------------------------------------
 -- Applications and Plugins shortcuts
 -----------------------------------------------------------
@@ -76,6 +81,10 @@ lsp_map('<leader>ff', builtin.find_files)
 lsp_map('<leader>fg', rel_live_grep)
 lsp_map('<leader>fb', builtin.buffers)
 lsp_map('<leader>fh', builtin.help_tags)
+lsp_map('<leader>fr', builtin.oldfiles)                  -- Recent files
+lsp_map('<leader>fc', builtin.commands)                  -- Commands
+lsp_map('<leader>fk', builtin.keymaps)                   -- Keymaps
+lsp_map('<leader>/', builtin.current_buffer_fuzzy_find)  -- Search in buffer
 
 -- Language server key mappings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -135,7 +144,3 @@ map('i', '<C-k>', 'copilot#Previous()', { desc = 'Previous copilot suggestion' }
 map('i', '<C-j>', 'copilot#Next()', { desc = 'Next copilot suggestion' })
 map('i', '<C-s>', 'copilot#Suggest()', { desc = 'Suggest copilot' })
 map('i', '<C-a>', 'copilot#Accept("<CR>")', { desc = 'Accept copilot suggestion' })
-
--- Markdown Preview
-vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
-vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})

@@ -40,6 +40,8 @@ return {
             ["<C-K>"] = lga_actions.move_selection_previous,
             ["<TAB>"] = lga_actions.toggle_selection,
             ["<c-t>"] = open_with_trouble,
+            ["<C-u>"] = actions.preview_scrolling_up,
+            ["<C-d>"] = actions.preview_scrolling_down,
           },
           n = { ["<c-t>"] = open_with_trouble },
         }

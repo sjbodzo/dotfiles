@@ -19,7 +19,6 @@ vim.cmd.colorscheme(colorscheme)
 opt.mouse = 'a'                       -- Enable mouse support
 opt.clipboard = 'unnamedplus'         -- Copy/paste to system clipboard
 opt.swapfile = false                  -- Don't use swapfile
-opt.completeopt = 'menuone,noinsert,noselect'  -- Autocomplete options
 opt.timeoutlen = 800
 
 -----------------------------------------------------------
@@ -50,7 +49,6 @@ opt.smartindent = true      -- Autoindent new lines
 -----------------------------------------------------------
 opt.hidden = true           -- Enable background buffers
 opt.history = 10000         -- Remember N lines in history
-opt.lazyredraw = true       -- Faster scrolling
 opt.synmaxcol = 200         -- Max column for syntax highlight
 opt.updatetime = 750        -- ms to wait for trigger an event
 
@@ -105,14 +103,24 @@ vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
 vim.opt.shortmess = vim.opt.shortmess + { c = true}
 vim.api.nvim_set_option_value('updatetime', 300, {})
 
+-- Search highlighting
+opt.hlsearch = true
+opt.incsearch = true  -- Show matches as you type
+
+opt.scrolloff = 8        -- Keep 8 lines visible above/below cursor
+opt.sidescrolloff = 8    -- Same for horizontal scrolling
+
 -- Fixed column for diagnostics to appear
 -- Show autodiagnostic popup on cursor hover_range
 -- Goto previous / next diagnostic warning / error
 -- Show inlay_hints more frequently
-vim.cmd([[
-set signcolumn=yes
-autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
+--
+-- use <space>e instead
+--
+-- vim.cmd([[
+-- set signcolumn=yes
+-- autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+-- ]])
 
 -- Set options for vimspector (debugger)
 vim.cmd([[

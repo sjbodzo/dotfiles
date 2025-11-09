@@ -1,18 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
   config = function()
-    vim.lsp.enable({
-    	'lua_ls',
-    	'nil_ls',
-    	'gopls',
-      'tilt_ls',
-      'yamlls',
-      'bashls',
-      'helm_ls',
-    })
-
-    local lspconfig = require("lspconfig")
-
     -- Use an on_attach function to only map the following keys
     -- after the language server attaches to the current buffer
     local on_attach = function(client, bufnr)
@@ -38,11 +26,59 @@ return {
       vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
       vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
       vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-
-     -- if client.resolved_capabilities.document_formatting then
-     --   vim.cmd("au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-     -- end
     end
+
+    -- Configure each language server
+    vim.lsp.config('lua_ls', {
+      cmd = { 'lua-language-server' },
+      filetypes = { 'lua' },
+      root_dir = require('lspconfig.util').root_pattern({
+         '.luarc.json',
+         '.luarc.jsonc',
+         '.luacheckrc',
+         '.stylua.toml',
+         'stylua.toml',
+         'selene.toml',
+         'selene.yml',
+         '.git',
+      }),
+      single_file_support = true,
+      log_level = vim.lsp.protocol.MessageType.Warning,
+      on_attach = on_attach,
+    })
+
+    vim.lsp.config('nil_ls', {
+      cmd = { 'nil' },
+      filetypes = { 'nix' },
+      single_file_support = true,
+      root_dir = require('lspconfig.util').root_pattern('flake.nix', '.git'),
+      on_attach = on_attach,
+    })
+
+    vim.lsp.config('gopls', {
+      cmd = { 'gopls' },
+      filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+      root_dir = require('lspconfig.util').root_pattern('go.work', 'go.mod', '.git'),
+      single_file_support = true,
+      settings = {
+        gopls = {
+          analyses = {
+            unusedparams = true,
+          },
+          staticcheck = true,
+          gofumpt = true,
+        },
+      },
+      on_attach = on_attach,
+    })
+
+    vim.lsp.config('tilt_ls', {
+      cmd = { 'tilt', 'lsp', 'start' },
+      filetypes = { 'starlark', 'tiltfile' },
+      root_dir = require('lspconfig.util').root_pattern('Tiltfile'),
+      single_file_support = true,
+      on_attach = on_attach,
+    })
 
     vim.lsp.config('yamlls', {
       cmd = { 'yaml-language-server', '--stdio' },
@@ -56,89 +92,58 @@ return {
           },
         }
       },
+      on_attach = on_attach,
     })
 
-    vim.lsp.config('lua_ls', {
-      cmd = { 'lua-language-server' },
-      filetypes = { 'lua' },
-      root_dir = require 'lspconfig.util'.root_pattern({
-         '.luarc.json',
-         '.luarc.jsonc',
-         '.luacheckrc',
-         '.stylua.toml',
-         'stylua.toml',
-         'selene.toml',
-         'selene.yml',
-         '.git',
-      }),
+    vim.lsp.config('bashls', {
+      cmd = { 'bash-language-server', 'start' },
+      filetypes = { 'sh', 'bash' },
+      root_dir = require('lspconfig.util').root_pattern('.git'),
       single_file_support = true,
-      log_level = vim.lsp.protocol.MessageType.Warning,
-    })
-
-    vim.lsp.config('nil_ls', {
-      cmd = { 'nil' },
-      filetypes = { 'nix' },
-      single_file_support = true,
-      root_dir = require 'lspconfig.util'.root_pattern('flake.nix', '.git'),
-      docs = {
-        description = [[
-          https://github.com/oxalica/nil
-
-          A new language server for Nix Expression Language.
-
-          If you are using Nix with Flakes support, run `nix profile install github:oxalica/nil` to install.
-          Check the repository README for more information.
-
-          _See an example config at https://github.com/oxalica/nil/blob/main/dev/nvim-lsp.nix._
-              ]]
-      },
-    })
-
-    vim.lsp.config('tilt_ls', {
-      cmd = { 'tilt', 'lsp', 'start' },
-      filetypes = { 'starlark', 'tiltfile' },
-      root_markers = { 'Tiltfile' },
-      docs = {
-        description = [[
-          https://docs.stack.build/docs/vscode/starlark-language-server
-          ]],
-      },
-      single_file_support = true,
+      on_attach = on_attach,
     })
 
     vim.lsp.config('helm_ls', {
-      logLevel = "info",
-      valuesFiles = {
-        mainValuesFile = "values.yaml",
-        lintOverlayValuesFile = "values.lint.yaml",
-        additionalValuesFilesGlobPattern = "*values*.yaml"
-      },
-      helmLint = {
-        enabled = true,
-        ignoredMessages = {},
-      },
-      yamlls = {
-        enabled = true,
-        enabledForFilesGlob = "*.{yaml,yml}",
-        diagnosticsLimit = 50,
-        showDiagnosticsDirectly = false,
-        path = "yaml-language-server",
-        initTimeoutSeconds = 3,
-        config = {
-          schemas = {
-            kubernetes = "templates/**",
+      cmd = { 'helm_ls', 'serve' },
+      filetypes = { 'helm' },
+      root_dir = require('lspconfig.util').root_pattern('Chart.yaml'),
+      single_file_support = true,
+      settings = {
+        ['helm-ls'] = {
+          logLevel = "info",
+          valuesFiles = {
+            mainValuesFile = "values.yaml",
+            lintOverlayValuesFile = "values.lint.yaml",
+            additionalValuesFilesGlobPattern = "*values*.yaml"
           },
-          completion = true,
-          hover = true,
-          -- any other config from https://github.com/redhat-developer/yaml-language-server#language-server-settings
+          yamlls = {
+            enabled = true,
+            enabledForFilesGlob = "*.{yaml,yml}",
+            diagnosticsLimit = 50,
+            showDiagnosticsDirectly = false,
+            path = "yaml-language-server",
+            config = {
+              schemas = {
+                kubernetes = "templates/**",
+              },
+              completion = true,
+              hover = true,
+            }
+          }
         }
-      }
+      },
+      on_attach = on_attach,
     })
 
-    local servers = { 'lua_ls', 'helm_ls', 'nil_ls', 'gopls', 'tilt_ls', 'bashls', 'yamlls' }
-    for _, lsp in ipairs(servers) do
-      vim.lsp.config[lsp].on_attach = on_attach
-    end
-
+    -- Enable all configured language servers
+    vim.lsp.enable({
+      'lua_ls',
+      'nil_ls',
+      'gopls',
+      'tilt_ls',
+      'yamlls',
+      'bashls',
+      'helm_ls',
+    })
   end
 }
